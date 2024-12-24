@@ -1,4 +1,4 @@
-import { isNumber, isPositive } from '$lib'
+import { isBranchName, isNumber, isPositive } from '$lib'
 import { prisma } from '$lib/server/db'
 import { serializeObject } from '$lib/server/form'
 import { redirect } from '$lib/server/router'
@@ -116,18 +116,18 @@ export const actions = {
       }
     }
 
-    if (remark.length > 60) {
+    if (remark.length > 240) {
       return {
         data,
-        error: '备注内容不超过60个字符'
+        error: '备注内容不超过240个字符'
       }
     }
 
     if (!standard) {
-      if (!/^([a-z]{2,20})\/(\d{8})-(.{1,})$/.test(data.name)) {
+      if (!isBranchName(data.name)) {
         return {
           data,
-          error: '分支名称输入不正确'
+          error: '分支名称格式输入不正确'
         }
       }
     }

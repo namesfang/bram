@@ -6,20 +6,10 @@
 	import Input from "$components/ui/input.svelte";
 	import Select from "$components/ui/select.svelte";
 	import Textarea from "$components/ui/textarea.svelte";
-	import BranchNameInput from "$components/branch-name-input.svelte";
+	import BranchName from "$components/branch-name.svelte";
 	import ColorSelect from "$components/ui/color-select.svelte";
 
   let { form, data } = $props()
-
-  let tileIdValue = ()=> {
-    if (form?.data.tileId) {
-      return Number(form.data.tileId)
-    }
-    if (data.tileId) {
-      return Number(data.tileId)
-    }
-    return null
-  }
 
   let tileId = $state(form?.data.tileId || data.tileId || '')
   let name = $state(form?.data.name || '')
@@ -37,12 +27,12 @@
         <Select bind:value={tileId} options={data.tiles} fieldNames={{label: 'name', value: 'id'}} name="tileId" align="left" placeholder="请选择"></Select>
       </li>
       <li data-label="分支名称">
-        <BranchNameInput bind:value={name}/>
+        <BranchName bind:value={name}/>
       </li>
       <li data-label="预计上线日期">
         <DatePicker bind:value={releaseAt} name="releaseAt"/>
       </li>
-      <li data-label="分组颜色">
+      <li data-label="分支颜色">
         <ColorSelect bind:value={color} name="color" placeholder="请选择"/>
       </li>
       <li data-label="分支状态">
@@ -52,7 +42,7 @@
         <Input bind:value={vendorId} type="text" name="vendorId" placeholder="来自项目管理系统的三方ID"/>
       </li>
       <li data-label="分支说明">
-        <Textarea bind:value={remark} name="remark" placeholder="说明"></Textarea>
+        <Textarea bind:value={remark} name="remark" placeholder="说明 240个字以内"></Textarea>
       </li>
     </ul>
     <Alert content={form?.error}/>
