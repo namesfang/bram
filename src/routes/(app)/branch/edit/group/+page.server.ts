@@ -58,17 +58,17 @@ export const actions = {
       }
     }
 
-    if (name.length > 20) {
+    if (name.length > 30) {
       return {
         data,
-        error: '分组名称不能超过20个字符'
+        error: '分组名称不能超过30个字符'
       }
     }
 
-    if (description.length > 200) {
+    if (description.length > 240) {
       return {
         data,
-        error: '分组描述不能超过200个字符'
+        error: '分组描述不能超过240个字符'
       }
     }
 

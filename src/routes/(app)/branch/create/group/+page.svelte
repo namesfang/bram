@@ -18,13 +18,13 @@
   <form method="POST">
     <ul>
       <li data-label="分组名称">
-        <Input bind:value={name} name="name" maxlength={20} placeholder="分组名称"/>
+        <Input bind:value={name} name="name" maxlength={30} placeholder="分组名称 30个字以内"/>
       </li>
       <li data-label="分组颜色">
         <ColorSelect bind:value={color} name="color" placeholder="请选择"/>
       </li>
       <li data-label="分组描述">
-        <Textarea bind:value={description} name="description" maxlength={200} placeholder="分组描述 200个字以内"></Textarea>
+        <Textarea bind:value={description} name="description" maxlength={240} placeholder="分组描述 240个字以内"></Textarea>
       </li>
     </ul>
     <Alert content={form?.error}/>
