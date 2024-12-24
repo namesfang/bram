@@ -4,6 +4,7 @@
 	import Button from "$components/ui/button.svelte";
 	import DatePicker from "./ui/date-picker.svelte";
 	import Datetime from "$lib/locale/datetime";
+	import { matchBranchName } from "$lib";
 
   let { value = $bindable() } = $props()
 
@@ -26,7 +27,7 @@
   })
 
   onMount(()=> {
-    const matchs = /^([a-z]{3,})\/(\d{8})\-([\w]{1,})/i.exec(value)
+    const matchs = matchBranchName(value)
     if(Array.isArray(matchs)) {
       type = matchs[1]
       date = matchs[2]
@@ -44,22 +45,21 @@
     <div class="west">
       {#if standardSchema}
       <div class="standard">
-        <Input bind:value={value} name="name" placeholder="请输入分支名称"/>
+        <Input bind:value={value} name="name" minlength={2} maxlength={60} placeholder="请输入分支名称 2~60个字"/>
         <input type="hidden" name="standard" value="1"/>
       </div>
       {:else}
       <div class="quirk">
         <div class="item feat">
-          <Input bind:value={type} placeholder="功能"/>
+          <Input bind:value={type} placeholder="<类型> 2~16小写字母"/>
         </div>
         <div class="item split1"></div>
         <div class="item free">
-          <!-- <Input bind:value={date} placeholder="日期"/> -->
           <DatePicker bind:value={date} format="YYYYMMDD" placeholder="日期"/>
         </div>
         <div class="item split2"></div>
         <div class="item free">
-          <Input bind:value={name} placeholder="具体功能"/>
+          <Input bind:value={name} maxlength={40} placeholder="<描述> 1~40个字"/>
         </div>
       </div>
       <input bind:value={value} type="hidden" name="name"/>
@@ -89,8 +89,9 @@
           display: flex;
           align-items: center;
           border-radius: 5px;
+          
           .feat {
-            width: 100px;
+            width: 180px;
           }
 
           .free {
