@@ -57,3 +57,12 @@ export const isEmpty = (value: unknown) => {
 
   return false
 }
+
+const branchNameRegExp = new RegExp(/^([a-z]{2,16})\/(\d{8})-(.{1,})$/)
+export const isBranchName = (value: string)=> {
+  return branchNameRegExp.test(value)
+}
+
+export const matchBranchName = (value: string)=> {
+  return branchNameRegExp.exec(value)
+}
