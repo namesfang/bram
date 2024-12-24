@@ -25,7 +25,7 @@
     color: var(--ui-input-secondary);
     border-radius: 5px;
     border: 2px solid var(--ui-input-secondary-50);
-    padding: 8px 18px;
+    padding: 8px 12px;
     box-sizing: border-box;
     height: 40px;
     background-color: #fff;
@@ -40,12 +40,12 @@
 
   .large {
     height: 46px;
-    padding: 6px 12px;
+    padding: 6px 16px;
   }
 
   .small {
     height: 32px;
-    padding: 6px 12px;
+    padding: 6px 8px;
   }
 
   .filled {
