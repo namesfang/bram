@@ -1,0 +1,25 @@
+.form {
+  width: 720px;
+  padding: 18px;
+  margin: 0 auto;
+  background-color: #fff;
+  
+  ul {
+    li {
+      margin-bottom: 18px;
+      padding-top: 26px;
+      position: relative;
+      display: flex;
+      &::before {
+        content: attr(data-label);
+        font: {
+          weight: bold;
+          size: 14px;
+        }
+        color: var(--text-color);
+        position: absolute;
+        top: 0;
+      }
+    }
+  }
+}

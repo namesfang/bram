@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Dict {
+  id          Int     @id @default(autoincrement())
+  parentId    Int?
+  name        String
+  value       String
+  label       String
+  description String  @default("")
+  enabled     Boolean @default(true)
+  orderNumber Int     @default(99)
+
+  parent   Dict?  @relation("Dictionaries", fields: [parentId], references: [id])
+  children Dict[] @relation("Dictionaries")
+}
+
+model Configuration {
+  id             Int     @id @default(autoincrement())
+  parentId       Int?
+  name           String
+  value          String
+  label          String
+  description    String  @default("")
+  enabled        Boolean @default(true)
+  orderNumber    Int     @default(99)
+  valueType      String  @default("string")
+  elementType    String  @default("input")
+  elementOptions String  @default("[]")
+
+  parent   Configuration?  @relation("Configuration", fields: [parentId], references: [id])
+  children Configuration[] @relation("Configuration")
+}
+
+model User {
+  id            Int    @id @default(autoincrement())
+  name          String
+  nick          String @default("")
+  password      String
+  configuration String @default("{}")
+
+  isAdm     Boolean  @default(false)
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tiles   Tile[]
+  branchs Branch[]
+
+  folders  Folder[]
+  articles Article[]
+}
+
+model Tile {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  name        String
+  color       String    @default("")
+  description String    @default("")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  orderNumber Int       @default(99)
+
+  user    User     @relation(fields: [userId], references: [id])
+  branchs Branch[]
+}
+
+model Branch {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  tileId      Int
+  name        String
+  color       String    @default("")
+  vendorId    String    @default("")
+  remark      String    @default("")
+  status      Int       @default(0)
+  releaseAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  orderNumber Int       @default(99)
+
+  user User @relation(fields: [userId], references: [id])
+  tile Tile @relation(fields: [tileId], references: [id])
+}
+
+model Folder {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  name        String
+  description String    @default("")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  orderNumber Int       @default(99)
+
+  user     User      @relation(fields: [userId], references: [id])
+  articles Article[]
+}
+
+model Article {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  folderId    Int
+  title       String
+  password    String
+  body        String
+  encrypted   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  orderNumber Int       @default(99)
+
+  folder Folder @relation(fields: [folderId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+}
