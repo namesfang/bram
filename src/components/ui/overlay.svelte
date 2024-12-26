@@ -6,19 +6,30 @@
 
   let {
     visible = $bindable(false),
+    alignItems = 'center',
+    maskClosable = false,
     children,
+    onclose,
     ...rest
-  } = $props()
+  }: ui.OverlayProps = $props()
 
 
   onMount(()=> {
     $zIndex += 1
   })
 
+  const overlayClick = (e: MouseEvent)=> {
+    if (maskClosable) {
+      visible = false
+      onclose?.(e)
+    }
+  }
+
 </script>
 
 {#if visible}
-  <div {...rest} transition:fly use:teleport class="ui-overlay" style:z-index={$zIndex}>
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div onclick={overlayClick} {...rest} transition:fly use:teleport class="ui-overlay" style:align-items={alignItems} style:z-index={$zIndex}>
     {@render children?.()}
   </div>
 {/if}
@@ -30,6 +41,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(187, 186, 212, 0.5);
+  backdrop-filter: saturate(50%) blur(4px);
 }
 </style>
