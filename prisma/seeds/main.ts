@@ -24,8 +24,8 @@ async function main() {
     data: [
       {id: 1, name: 'site', value: '', label: '网站配置', description: '网站基本配置'},
       {parentId: 1, id: 2, name: 'name', value: '1', label: '网站名称', description: ''},
+      {parentId: 1, id: 4, name: 'weatherKey', value: '', label: '天气接口KEY', description: '高德天气接口KEY'},
       {parentId: 1, id: 3, name: 'ICPString', value: '1', label: 'ICP备案', description: ''},
-      {parentId: 1, id: 4, name: 'weatherKey', value: '4d6eb9e7a5d3ac396f87915d7b9c53dd', label: '天气接口KEY', description: ''},
       {id: 5, name: 'security', value: '1', label: '', description: '网站安全相关配置'},
       {parentId: 5, id: 6, name: 'loginEnabled', value: '1', valueType: 'boolean', label: '登录开关', description: '关闭后前端账号无法登录'},
       {parentId: 5, id: 7, name: 'signupEnabled', value: '1', valueType: 'boolean', label: '注册开关', description: '关闭后前端账号无法注册'},
