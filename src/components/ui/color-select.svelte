@@ -47,7 +47,7 @@
 </script>
 
 <div class="ui-select" {style}>
-  <div class="trigger">
+  <div class="trigger" class:expand={visible}>
     <input data-popper-trigger bind:value={current.label} onclick={toggle} type="text" readonly {placeholder}/>
     <span class:none={current.value === ''} style:--color={current.value as string}></span>
   </div>
@@ -78,6 +78,25 @@
     .trigger {
       width: 100%;
       position: relative;
+
+      &::after {
+        content: "";
+        border: 5px solid transparent;
+        border-top-color: var(--ui-select-secondary);
+        position: absolute;
+        right: 16px;
+        top: 18px;
+        transform: rotate(0deg);
+        transition-duration: 200ms;
+      }
+
+      &.expand {
+        &::after {
+          top: 14px;
+          transform: rotate(180deg);
+          transition-duration: 200ms;
+        }
+      }
 
       input {
         width: 100%;
