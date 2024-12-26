@@ -43,7 +43,7 @@ export const actions = {
       }
     }
     
-    const sessionCaptcha = locals.session.get('captcha')
+    const sessionCaptcha = locals.session.get<string>('captcha')
     if (null === sessionCaptcha) {
       return {
         data,
@@ -72,11 +72,26 @@ export const actions = {
     // 系统有多少个账号
     const count = await prisma.user.count()
 
+    const configuration = JSON.stringify({
+      // 天气
+			weather: {
+				cityCode: '瑶海区',
+				cityName: '340102'
+			},
+      branch: {
+        // 新增分支按钮在列表中的位置
+        createPosition: 1,
+        // 是否折叠已发布状态
+        collapsePublished: 1,
+      }
+    })
+
     await prisma.user.create({
       data: {
         name,
         password: await Password.hash(password),
         isAdm: count === 0,
+        configuration,
       }
     });
 
