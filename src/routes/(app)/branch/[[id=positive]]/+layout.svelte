@@ -8,6 +8,7 @@
 	import { Fetch } from "$lib/fetch";
 	import { fade } from "svelte/transition";
 	import { setContext } from "svelte";
+	import Overlay from "$components/ui/overlay.svelte";
 
   let { data, children } = $props()
 
@@ -19,7 +20,7 @@
     const ok = await message.confirm('确定删除所选分组及分组下的所有分支？')
     
     if (ok) {
-      const f = new Fetch(fetch)
+      const f = new Fetch()
       
       const { ok, message: msg } = await f.post('/branch/remove/group', { id })
       
@@ -105,11 +106,9 @@
   {/if}
 </div>
 
-{#if visible}
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<div onclick={toggle} transition:fade class="finder-container">
+<Overlay bind:visible={visible} maskClosable alignItems="flex-start">
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
   <form onsubmit={()=> (visible = false) } onclick={(e)=> e.stopPropagation()} class="finder">
     <Icon name="search" size="large"/>
     <input bind:value={keyword} name="keyword" autocomplete="off" placeholder="搜索分组名称/说明 | 分支名称/备注" />
@@ -117,49 +116,38 @@
       <Button onclick={()=> keyword= ''} link icon="close" size="small" shape="circle"></Button>
     {/if}
   </form>
-</div>
-{/if}
+</Overlay>
 
 <style lang="scss">
-
-  .finder-container {
+  .finder {
+    width: 480px;
+    height: 52px;
+    background-color: #fff;
+    border-radius: 6px;
     display: flex;
-    position: fixed;
-    inset: 0;
-    background-color: rgba(187, 186, 212, 0.24);
-    background-size: 4px 4px;
-    backdrop-filter: saturate(50%) blur(4px);
-    justify-content: center;
-    .finder {
-      width: 480px;
-      height: 52px;
-      background-color: #fff;
-      border-radius: 6px;
+    margin-top: 20%;
+    position: relative;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),0 3px 6px -4px rgba(0, 0, 0, 0.12),0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+    input {
+      flex: 1;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      outline: none;
+    }
+
+    :global(i) {
+      width: 52px;
       display: flex;
-      margin-top: 10%;
-      position: relative;
-      box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),0 3px 6px -4px rgba(0, 0, 0, 0.12),0 9px 28px 8px rgba(0, 0, 0, 0.05);
+      align-items: center;
+      justify-content: center;
+    }
 
-      input {
-        flex: 1;
-        background-color: transparent;
-        border: none;
-        padding: 0;
-        outline: none;
-      }
-
-      :global(i) {
-        width: 52px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      :global(button) {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-      }
+    :global(button) {
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
   }
 

@@ -109,15 +109,9 @@
 			closeControl()
 		}
 	}
-
-	const overlayControl = () => {
-		if (maskClosable) {
-			closeControl();
-		}
-	}
 </script>
 
-<Overlay onclick={overlayControl} bind:visible>
+<Overlay onclose={closeControl} bind:visible>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div onclick={(e)=> e.stopPropagation() } class="ui-modal" style={modalStyles}>

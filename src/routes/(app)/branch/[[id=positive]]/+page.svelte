@@ -21,7 +21,7 @@
     const ok = await message.confirm('删除所选分支，删除后无法恢复？')
     
     if (ok) {
-      const f = new Fetch(fetch)
+      const f = new Fetch()
       
       const { ok, message: msg } = await f.post('/branch/remove', { id })
       
@@ -50,7 +50,7 @@
         return
       }
 
-      const f = new Fetch(fetch)
+      const f = new Fetch()
       const { ok, message: msg } = await f.post('/branch/change/status', {
         id: current.id,
         status: currentStatus
@@ -112,6 +112,14 @@
 <Container title={data.tile?.name || ''} description={data.tile?.description}>
   {#if data.branchs.length > 0}  
     <ul class="branchs">
+      {#if (0 === data.createPosition || (2 === data.createPosition && data.branchs.length > 8))}
+        <li>
+          <a href={`/branch/create?id=${data.tile?.id}`} class="button">
+            <Icon name="add"/>
+            <span>新增分支</span>
+          </a>
+        </li>
+      {/if}
       {#each data.branchs as item}
         <li style:--color={item.color || '#e8e4ff'}>
           <h2>
@@ -132,12 +140,22 @@
           <span class={`tag tag-${item.status}`}>{data.branchStatus[item.status]}</span>
         </li>
       {/each}
+      {#if data.published.length > 0}
       <li>
-        <a href={`/branch/create?id=${data.tile?.id}`} class="create">
-          <Icon name="add"/>
-          <span>新增分支</span>
+        <a href="?expand=1" class="button expand">
+          <Icon name="more"/>
+          <span>展开所有已发版分支</span>
         </a>
       </li>
+      {/if}
+      {#if [1,2].includes(data.createPosition)}
+        <li>
+          <a href={`/branch/create?id=${data.tile?.id}`} class="button">
+            <Icon name="add"/>
+            <span>新增分支</span>
+          </a>
+        </li>
+      {/if}
     </ul>
   {:else}
     {#if data.tile}
@@ -263,7 +281,7 @@
         }
       }
 
-      .create {
+      .button {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -273,9 +291,14 @@
           font-size: 14px;
         }
         :global(i) {
-          font-size: 26px;
+          font-size: 36px;
           color: var(--text-2-color);
         }
+      }
+
+      .expand {
+        // 渐变淡蓝色
+        background-image: radial-gradient(ellipse at center, #dbecff 0%, rgba(255,255,255, .05) 50%)
       }
     }
   }

@@ -44,7 +44,7 @@ export const actions = {
       }
     }
 
-    const sessionCaptcha = locals.session.get('captcha')
+    const sessionCaptcha = locals.session.get<string>('captcha')
     if (null === sessionCaptcha) {
       return {
         data,
@@ -77,13 +77,14 @@ export const actions = {
       }
     }
 
-    const { id, isAdm, createdAt } = user
+    const { id, isAdm, configuration, createdAt } = user
 
     locals.session.set('profile', {
       id,
       name,
       isAdm,
       createAt: Datetime.format(createdAt),
+      configuration: JSON.parse(configuration),
     })
 
     return redirect('/login/success', url)

@@ -71,6 +71,8 @@ export default class Session {
   private sessionValue = ''
   private sessionPath = ''
 
+  private savePath = ''
+
   private cookieOptions: CookieOptions = {}
 
   private cookie: Cookies
@@ -91,6 +93,8 @@ export default class Session {
     this.cookieOptions = Object.assign({}, this.cookieOptions, cookieOptions)
     // 获取会话名称
     this.sessionValue = cookies.get(sessionName as string) || ''
+
+    this.savePath = savePath
 
     // 初始化session
     if(!this.sessionValue) {
@@ -138,25 +142,28 @@ export default class Session {
     })
   }
 
-  get(name: string): unknown | null {
+  get<T = unknown>(name: string): T | null {
     try {
       const filename = `${this.sessionPath}/${name}.json`
       if (!existsSync(filename)) {
         return null
       }
 
+      const now = Math.floor(Date.now() / 1000)
       const data = readFileSync(filename, 'utf-8')
 
       const { value, expire } = JSON.parse(data)
 
       // 会话数据已过期
       if (expire > 0) {
-        if (expire < Math.floor(Date.now() / 1000)) {
+        if (expire < now) {
           return null
         }
       }
+      
+      this.updateState()
 
-      return value
+      return value as T
     } catch (error) {
       throw new Error('not found', error as Error)
     }
@@ -181,6 +188,24 @@ export default class Session {
     } catch (error) {
       console.log('set error', error as Error)
     }
+  }
+
+  /**
+   * 更新最后一次读取时间
+   * 用于判断会话是否过期
+   * 及时删除信息
+   */
+  private updateState() {
+    const stateFile = `${this.savePath}/state.json`
+
+    const state = existsSync(stateFile) ? JSON.parse(readFileSync(stateFile, 'utf-8')) : {}
+
+    state[this.sessionValue] = Math.floor(Date.now() / 1000)
+
+    writeFileSync(stateFile, JSON.stringify(state), {
+      encoding: 'utf-8',
+      mode: 0o755,
+    })
   }
 
   private encrypt(text: string) {

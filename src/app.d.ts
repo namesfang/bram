@@ -9,6 +9,19 @@ declare global {
 		nick: string
 		isAdm: boolean
 		createdAt: string
+		configuration: {
+			// 天气
+			weather: {
+				cityCode: string
+				cityName: string
+			},
+			branch: {
+        // 新增分支按钮在列表中的位置 before | after | both
+        createPosition: 0 | 1 | 2,
+        // 是否折叠已发布状态
+        collapsePublished: 0 | 1,
+      }
+		}
 	}
 
 	// 配置项
