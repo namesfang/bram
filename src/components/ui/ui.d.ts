@@ -10,7 +10,7 @@ declare global {
     type Colors = 'success' | 'warning' | 'info' | 'danger' | 'default' | 'tertiary' | 'primary'
 
     // 图标类型
-    type Icons = 'check' | 'file-copy' | 'svelte' | 'send-plane' | 'close-circle' | 'close'|'download'|'file'|'file-pdf'|'file-damage'|'file-excel-2'|'markdown'|'quill-pen'|'notification'|'arrow-right-up-box'|'book'|'github'|'user-3'|'add'|'git-branch'|'information'|'error-warning'|'checkbox-circle'|'search'|'folder'|'lock'|'settings-3'|'edit-box'
+    type Icons = 'more' | 'check' | 'file-copy' | 'svelte' | 'send-plane' | 'close-circle' | 'close'|'download'|'file'|'file-pdf'|'file-damage'|'file-excel-2'|'markdown'|'quill-pen'|'notification'|'arrow-right-up-box'|'book'|'github'|'user-3'|'add'|'git-branch'|'information'|'error-warning'|'checkbox-circle'|'search'|'folder'|'lock'|'settings-3'|'edit-box'
 
     interface IconProps {
       name: Icons
@@ -147,7 +147,7 @@ declare global {
       fieldNames?: FieldNames
       placeholder?: string
       options: Option[]
-      onchange?: (value: string | number | unknown, option: Option) => void
+      onchange?: (value: string | number | unknown, option: Option) => void | Promise<void>
     }
 
     interface TabProps {
@@ -249,6 +249,32 @@ declare global {
       content: string
       onConfirm?: ()=> void
       onCancel?: ()=> void
+    }
+
+    type SwitchValue = number | string
+    interface SwitchProps {
+      name?: string
+      value: SwitchValue
+      customValues?: [SwitchValue, SwitchValue]
+      customLabels?: [string, string]
+      size?: Sizes
+      color?: Colors
+      round?: boolean
+      disabled?: boolean
+      style?: string
+      class?: string
+      onchange?: (value: SwitchValue, booleanValue: boolean)=> void | Promise<void>
+    }
+
+    interface OverlayProps {
+      visible?: boolean
+      maskClosable?: boolean
+      alignItems?: 'center' | 'flex-start' | 'flex-end'
+      onclose?: (event: MouseEvent)=> void | Promise<void>
+      onclick?: (event: MouseEvent)=> void|Promise<void>
+      class?: string
+      style?: string
+      children?: Snippet
     }
   }
 }
