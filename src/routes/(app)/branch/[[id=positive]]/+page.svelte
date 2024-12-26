@@ -94,11 +94,16 @@
     return [color, `${Math.abs(value)}天后到期(${compareDate})`]
   }
 
+  let copied = $state(false)
   const copy = async (item: Branch)=> {
     try {
       current = item
+      copied = true
       await navigator.clipboard.writeText(item.name)
-      setTimeout(() => current = undefined, 2000);
+      setTimeout(() => {
+        current = undefined
+        copied = false
+      }, 2000);
     } catch (error) {
       
     }
@@ -124,7 +129,7 @@
         <li style:--color={item.color || '#e8e4ff'}>
           <h2>
             <span>{item.name}</span>
-            <Button onclick={()=> copy(item)} icon={current?.name === item.name ? 'check' : 'file-copy'} color={current?.name === item.name ? 'success' : 'default'} size="tiny" shape="circle"></Button>
+            <Button onclick={()=> copy(item)} icon={copied && current?.name === item.name ? 'check' : 'file-copy'} color={copied && current?.name === item.name ? 'success' : 'default'} size="tiny" shape="circle"></Button>
           </h2>
           <p>{item.remark}</p>
           <div class="footer">
@@ -175,7 +180,7 @@
   {/if}
 </Container>
 
-<Modal oncommand={onChangeStatus} bind:visible={visible} title="变更状态">
+<Modal oncommand={onChangeStatus} bind:visible={visible} maskClosable title="变更状态">
   <ul class="status">
     {#each data.branchStatus.children as item}
       <li>
