@@ -21,7 +21,6 @@
 			description: "系统未知错误"
 		}
 	})
-	console.log($page.status)
 </script>
 
 <Result danger {...messages}>

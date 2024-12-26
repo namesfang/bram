@@ -89,6 +89,12 @@ export const load = async ({ locals, params, url }) => {
     branchs.push(...temp)
   }
 
+  // 如果分支中一个都没有则撤回分组
+  if (branchs.length === 0) {
+    branchs.push(...published)
+    published.splice(0)
+  }
+
   return {
     tile,
     branchs,
