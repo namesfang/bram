@@ -12,7 +12,7 @@ export class Fetch {
 
   private _params: Record<string, string | number> = {}
 
-  constructor(protected fetch: (input: string | URL | globalThis.Request, init?: RequestInit )=> Promise<Response>) {}
+  // constructor(protected fetch: (input: string | URL | globalThis.Request, init?: RequestInit )=> Promise<Response>) {}
 
   params(value: Record<string, string | number> = {}, replace = false) {
     this._params = replace ? recursive(this._params, value) : merge(this._params, value)
@@ -43,13 +43,13 @@ export class Fetch {
    */
   async get<T, R = Result<T>>(url: string) {
     url = this.mergeQueryParams(url)
-    const res = await this.fetch(url, { method: 'GET' })
+    const res = await fetch(url, { method: 'GET' })
     return await res.json() as R
   }
 
   async post<T>(url: string, data: Record<string, string | number> = {}) {
     url = this.mergeQueryParams(url)
-    const res = await this.fetch(url, {
+    const res = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' }
