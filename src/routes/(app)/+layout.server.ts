@@ -30,7 +30,7 @@ interface Result<T> {
 }
 
 const fetchLiveWeather = async ()=> {
-const f = new Fetch(fetch)
+const f = new Fetch()
   const params = {
     key: '4d6eb9e7a5d3ac396f87915d7b9c53dd',
     city: '340102',
