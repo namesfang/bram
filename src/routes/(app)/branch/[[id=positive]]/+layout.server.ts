@@ -27,7 +27,7 @@ const fetchTiles = async(userId: number, keyword: string)=> {
       _count: {
         select: { 
           branchs: {
-            where: { userId }
+            where: { userId, deletedAt: null }
           }
         }
       }
