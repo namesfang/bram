@@ -1,7 +1,63 @@
 <script>
 	import { dev } from "$app/environment";
-import Container from "$components/ui/container.svelte";
+	import Container from "$components/ui/container.svelte";
+	import { Chart } from "chart.js/auto";
+	import { onMount } from "svelte";
+
 	let { data } = $props()
+
+	let canvasEl = $state()
+
+	onMount(()=> {
+		new Chart(canvasEl, {
+			type: 'line',
+			data: data.chart,
+			options: {
+				responsive: true,
+				scales: {
+					x: {
+						offset: true,
+						ticks: {
+							padding: 10,
+						},
+						grid: {
+							drawTicks: false,
+							color: '#fafaf1'
+						}
+					},
+					y: {
+						beginAtZero: true,
+						offset: true,
+						ticks: {
+							padding: 10,
+						},
+						grid: {
+							drawTicks: false,
+							color: '#fafaf1'
+						}
+					}
+				},
+				plugins: {
+					legend: {
+						position: 'top',
+						labels: {
+							boxWidth: 20,
+							boxHeight: 16,
+							borderRadius: 6,
+							useBorderRadius: true,
+						}
+					},
+					title: {
+						display: true,
+						text: '本月发版情况概览',
+						font: {
+							size: 26
+						}
+					}
+				}
+			},
+		})
+	})
 </script>
 
 <svelte:head>
@@ -19,6 +75,9 @@ import Container from "$components/ui/container.svelte";
 </svelte:head>
 
 <Container title="欢迎页" padding>
+	<div class="chart-container">
+		<canvas width="960px" height="380px" bind:this={canvasEl}></canvas>
+	</div>
 	<ul>
 		{#each data.casts as cast}
 			<li>
@@ -34,3 +93,10 @@ import Container from "$components/ui/container.svelte";
 		{/each}
 	</ul>
 </Container>
+
+<style lang="scss">
+	.chart-container {
+		width: 960px;
+		margin: 0 auto;
+	}
+</style>

@@ -65,6 +65,7 @@ CREATE TABLE "Branch" (
     "remark" TEXT NOT NULL DEFAULT '',
     "status" INTEGER NOT NULL DEFAULT 0,
     "releaseAt" DATETIME,
+    "publishedAt" DATETIME,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "deletedAt" DATETIME,
