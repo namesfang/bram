@@ -30,6 +30,7 @@ export const POST: RequestHandler = async ({ request, locals })=> {
       where: { id },
       data: {
         status,
+        publishedAt: status === 8 ? new Date() : null,
       }
     })
     return Respond.ok('删除成功')

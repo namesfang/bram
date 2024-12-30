@@ -6,9 +6,10 @@
 
 	import { getMessageContext } from "$components/ui/message";
 	import { Fetch } from "$lib/fetch";
-	import { fade } from "svelte/transition";
-	import { setContext } from "svelte";
+	import { onMount, setContext } from "svelte";
 	import Overlay from "$components/ui/overlay.svelte";
+	import { browser } from "$app/environment";
+	import { sortable } from "$components/ui/actions/sortable.js";
 
   let { data, children } = $props()
 
@@ -45,6 +46,11 @@
   setContext('branch', {
     toggle,
   })
+
+  let tilesElement = $state<HTMLUListElement>()
+
+  onMount(()=> {})
+
 </script>
 
 <div class="flex-container">
@@ -62,9 +68,13 @@
     <div class="header">分组列表</div>
     <div class="list">
       {#if data.tiles.length > 0}
-        <ul>
+        <ul bind:this={tilesElement}>
           {#each data.tiles as item}
-            <li style:--background={item.color || '#2f54eb'} style:--border-color={item.color} class:active={data.pathname === `/branch/${item.id}`}>
+            <li
+              use:sortable
+              style:--background={item.color || '#2f54eb'}
+              style:--border-color={item.color}
+              class:active={data.pathname === `/branch/${item.id}`}>
               <a href={`/branch/${item.id}`}>
                 <h2>{item.name}</h2>
                 <p>{item.description}</p>

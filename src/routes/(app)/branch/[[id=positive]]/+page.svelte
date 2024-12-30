@@ -7,6 +7,7 @@
   import { getMessageContext } from "$components/ui/message";
 	import Modal from "$components/ui/modal.svelte";
 	import { Fetch } from "$lib/fetch";
+	import Datetime from "$lib/locale/datetime.js";
 	import type { Branch } from "@prisma/client";
 	import dayjs from "dayjs";
 	import { getContext } from "svelte";
@@ -127,10 +128,15 @@
       {/if}
       {#each data.branchs as item}
         <li style:--color={item.color || '#e8e4ff'}>
-          <h2>
-            <span>{item.name}</span>
-            <Button onclick={()=> copy(item)} icon={copied && current?.name === item.name ? 'check' : 'file-copy'} color={copied && current?.name === item.name ? 'success' : 'default'} size="tiny" shape="circle"></Button>
-          </h2>
+          <div class="header">
+            <div class="name">
+              <span>{item.name}</span>
+              <Button onclick={()=> copy(item)} icon={copied && current?.name === item.name ? 'check' : 'file-copy'} color={copied && current?.name === item.name ? 'success' : 'default'} size="tiny" shape="circle"></Button>
+            </div>
+            {#if item.publishedAt}
+              <div class="published">{Datetime.formatOrNil(item.publishedAt)}</div>
+            {/if}
+          </div>
           <p>{item.remark}</p>
           <div class="footer">
             <div class="wt">
@@ -195,7 +201,7 @@
     min-height: 100px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    grid-auto-rows: 150px;
+    grid-auto-rows: 168px;
     gap: 12px;
     padding-bottom: 12px;
 
@@ -214,14 +220,32 @@
         }
       }
 
-      h2 {
-        height: 28px;
-        font-size: 16px;
-        color: var(--text-color);
+      .header {
+        height: 40px;
         display: flex;
-        align-items: center;
-        :global(button) {
-          margin-left: 5px;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .name {
+          height: 24px;
+          display: flex;
+          align-items: center;
+
+          span {
+            font: {
+              size: 16px;
+              weight: bold;
+            };
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            margin-right: 7px;
+          }
+        }
+
+        .published {
+          font-size: 12px;
+          color: var(--text-2-color);
         }
       }
 
