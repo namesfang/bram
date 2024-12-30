@@ -6,16 +6,12 @@
 
 	import { getMessageContext } from "$components/ui/message";
 	import { Fetch } from "$lib/fetch";
-	import { onMount, setContext } from "svelte";
+	import { setContext } from "svelte";
 	import Overlay from "$components/ui/overlay.svelte";
-	import { browser } from "$app/environment";
-	import { sortable } from "$components/ui/actions/sortable.js";
 
   let { data, children } = $props()
 
   const message = getMessageContext()
-
-  
 
   const remove = async (id: number)=> {
     const ok = await message.confirm('确定删除所选分组及分组下的所有分支？')
@@ -46,11 +42,6 @@
   setContext('branch', {
     toggle,
   })
-
-  let tilesElement = $state<HTMLUListElement>()
-
-  onMount(()=> {})
-
 </script>
 
 <div class="flex-container">
@@ -68,10 +59,9 @@
     <div class="header">分组列表</div>
     <div class="list">
       {#if data.tiles.length > 0}
-        <ul bind:this={tilesElement}>
+        <ul>
           {#each data.tiles as item}
             <li
-              use:sortable
               style:--background={item.color || '#2f54eb'}
               style:--border-color={item.color}
               class:active={data.pathname === `/branch/${item.id}`}>
