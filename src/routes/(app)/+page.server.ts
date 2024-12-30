@@ -1,4 +1,9 @@
 import { Fetch } from "$lib/fetch"
+import { prisma } from "$lib/server/db"
+import { countBranchCreated, countBranchPublished } from '@prisma/client/sql'
+import type { ChartData } from "chart.js"
+
+import dayjs from "dayjs"
 
 interface Cast {
   // 日期
@@ -44,6 +49,9 @@ interface Result<T> {
   forecasts: T[]
 }
 
+const startTime = dayjs().format('YYYY-MM-01 00:00:00').valueOf()
+const endTime = dayjs().endOf('month').format('YYYY-MM-DD 23:59:59').valueOf()
+
 const fetchWeather = async()=> {
   return []
   const f = new Fetch()
@@ -60,11 +68,64 @@ const fetchWeather = async()=> {
   return forecasts[0].casts || []
 }
 
-export const load = async()=> {
+const makeChartData = async (userId: number)=> {
+  const createdMap = new Map<string, number>()
+  const countCreated = await prisma.$queryRawTyped(
+    countBranchCreated(userId, startTime, endTime)
+  )
+  const publishedMap = new Map<string, number>()
+  const countPublished = await prisma.$queryRawTyped(
+    countBranchPublished(userId, startTime, endTime)
+  )
+
+  countCreated.forEach(({ created, count })=> {
+    if (created) {
+      createdMap.set(created.split('-').pop() as string, Number(count))
+    }
+  })
+
+  countPublished.forEach(({ published, count })=> {
+    if (published) {
+      publishedMap.set(published.split('-').pop() as string, Number(count))
+    }
+  })
+
+  const end = dayjs().endOf('month').date()
+
+  const labels: string[] = []
+  const created: number[] = [0]
+  const published: number[] = []
+  for(let i=1; i<end; i++) {
+    const d = i.toString().padStart(2, '0')
+    labels.push(d)
+    created.push(createdMap.get(d) || 0)
+    published.push(publishedMap.get(d) || 0)
+  }
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: '新增',
+        data: created,
+      },
+      {
+        label: '发版',
+        data: published,
+      }
+    ],
+  } as ChartData<'line'>
+}
+
+export const load = async({ locals })=> {
+  const { id } = locals.user
   
   const casts = await fetchWeather()
+  
+  const chart = await makeChartData(id)
 
   return {
     casts,
+    chart,
   }
 }
