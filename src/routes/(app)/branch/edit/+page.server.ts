@@ -73,7 +73,7 @@ export const actions = {
 
     const id = Number(searchParams.get('id'))
 
-    const { name, color, remark, status, tileId, releaseAt, vendorId, standard } = data
+    const { name, color, remark, status, tileId, releaseAt, vendorId, standard, orderNumber } = data
 
     if (!isNumber(tileId)) {
       return {
@@ -105,6 +105,21 @@ export const actions = {
         return {
           data,
           error: '颜色格式不正确'
+        }
+      }
+    }
+
+    if (isNumber(orderNumber)) {
+      if (Number(orderNumber) < 1) {
+        return {
+          data,
+          error: '序号不小于1'
+        }
+      }
+      if (Number(orderNumber) > 200) {
+        return {
+          data,
+          error: '序号不能超过200'
         }
       }
     }
@@ -155,6 +170,7 @@ export const actions = {
         tileId: Number(tileId),
         releaseAt: releaseAt ? new Date(releaseAt) : null,
         vendorId: vendorId || '',
+        orderNumber: Number(orderNumber) || 99,
         userId
       }
     })

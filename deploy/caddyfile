@@ -1,0 +1,22 @@
+bram.previews.vip {
+	root * /var/www/bram/build
+	file_server
+	@http {
+		protocol http
+	}
+	reverse_proxy localhost:3000 {
+		header_up X-Real-IP {remote}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	@options {
+		method OPTIONS
+	}
+	header {
+		Access-Control-Allow-Origin *
+		Access-Control-Allow-Methods GET,POST,PUT,DELETE,OPITONS
+		Access-Control-Allow-Headers Content-Type,Authorization
+		defer
+	}
+	respond @options 204
+}

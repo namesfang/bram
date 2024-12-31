@@ -1,3 +1,4 @@
+import { isNumber } from '$lib'
 import { isPositive } from '$lib'
 import { prisma } from '$lib/server/db'
 import { serializeObject } from '$lib/server/form'
@@ -49,7 +50,7 @@ export const actions = {
 
     const id = Number(searchParams.get('id'))
 
-    const { name, color, description } = data
+    const { name, color, description, orderNumber } = data
 
     if (name.length === 0) {
       return {
@@ -62,6 +63,21 @@ export const actions = {
       return {
         data,
         error: '分组名称不能超过30个字符'
+      }
+    }
+
+    if (isNumber(orderNumber)) {
+      if (Number(orderNumber) < 1) {
+        return {
+          data,
+          error: '序号不小于1'
+        }
+      }
+      if (Number(orderNumber) > 200) {
+        return {
+          data,
+          error: '序号不能超过200'
+        }
       }
     }
 
@@ -109,6 +125,7 @@ export const actions = {
         name,
         color,
         description,
+        orderNumber: Number(orderNumber) || 99,
       }
     })
 

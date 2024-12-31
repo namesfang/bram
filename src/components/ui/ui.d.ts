@@ -104,7 +104,7 @@ declare global {
       name?: string
       value?: string
       size?: Sizes
-      type?: 'text' | 'password'
+      type?: 'text' | 'password' | 'number'
       placeholder?: string
       autocomplete?: boolean
       maxlength?: number
@@ -112,6 +112,14 @@ declare global {
       class?: string
       style?: string
       filled?: boolean
+    }
+
+    interface InputNumberProps extends Omit<InputProps, 'autocomplete' | 'type' | 'minlength' | 'maxlength'> {
+      step?: number
+      max?: number
+      min?: number
+      value?: number
+      hideButtons?: boolean
     }
 
     interface TextareaProps {

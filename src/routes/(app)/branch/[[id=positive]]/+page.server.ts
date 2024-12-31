@@ -36,7 +36,10 @@ const fetchBranchs = async(userId: number, tileId: string, keyword: string)=> {
 
   const branchs = await prisma.branch.findMany({
     where,
-    orderBy: { id: 'desc' },
+    orderBy: [
+      {orderNumber: 'asc'},
+      {id: 'asc'},
+    ],
   })
 
   return {

@@ -10,11 +10,15 @@
 	import ColorSelect from "$components/ui/color-select.svelte";
 	import Container from "$components/ui/container.svelte";
 	import Datetime from "$lib/locale/datetime";
+	import InputNumber from "$components/ui/input-number.svelte";
 
   let { form, data } = $props()
 
+  let oNumber = Number(form?.data.orderNumber) || 0
+
   let tileId = $state(form?.data.tileId || data.branch.tileId || '')
   let name = $state(form?.data.name || data.branch.name || '')
+  let orderNumber = $state(oNumber || data.branch.orderNumber || 99)
   let releaseAt = $state(form?.data.releaseAt || Datetime.formatdOrNil(data.branch.releaseAt))
   let status = $state(form?.data.status || `${data.branch.status}` || '')
   let color = $state(form?.data.color || data.branch.color || '')
@@ -33,6 +37,9 @@
       </li>
       <li data-label="预计上线日期">
         <DatePicker bind:value={releaseAt} name="releaseAt"/>
+      </li>
+      <li data-label="分支排序">
+        <InputNumber bind:value={orderNumber} name="orderNumber" min={1} max={200} placeholder="序号越小越靠前"/>
       </li>
       <li data-label="分支颜色">
         <ColorSelect bind:value={color} name="color" placeholder="请选择"/>

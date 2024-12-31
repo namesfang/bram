@@ -8,11 +8,13 @@
 	import Textarea from "$components/ui/textarea.svelte";
 	import BranchName from "$components/branch-name.svelte";
 	import ColorSelect from "$components/ui/color-select.svelte";
+	import InputNumber from "$components/ui/input-number.svelte";
 
   let { form, data } = $props()
 
   let tileId = $state(form?.data.tileId || data.tileId || '')
   let name = $state(form?.data.name || '')
+  let orderNumber = $state(99)
   let releaseAt = $state(form?.data.releaseAt || '')
   let status = $state(form?.data.status || '0')
   let color = $state(form?.data.color || '')
@@ -31,6 +33,9 @@
       </li>
       <li data-label="预计上线日期">
         <DatePicker bind:value={releaseAt} name="releaseAt"/>
+      </li>
+      <li data-label="分支排序">
+        <InputNumber bind:value={orderNumber} name="orderNumber" min={1} max={200} placeholder="序号越小越靠前"/>
       </li>
       <li data-label="分支颜色">
         <ColorSelect bind:value={color} name="color" placeholder="请选择"/>
