@@ -29,7 +29,7 @@
 3. 笔记管理
 3. 分支导出（PDF,MD,Excel）
 
-## 项目本地预览
+## 本地预览
 
 ```bash
 # 设置环境变量
@@ -40,14 +40,18 @@ cp .env.example .env
 # 安装依赖
 npm install
 
-# 初始化数据库
-npx prisma db push
-
-# 初始化基础数据
-npx prisma db seed
+# 生成数据库文件
+npm run deploy
 
 # 启动开发环境
 npm run dev
 
 # 浏览器访问 http://localhost:6040
 # 第1个注册账号为管理员账号
+
+
+## 部署
+
+# 打包
+npm run build
+
