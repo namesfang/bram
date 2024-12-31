@@ -18,7 +18,10 @@ const fetchTiles = async(userId: number, keyword: string)=> {
   }
   return await prisma.tile.findMany({
     where,
-    orderBy: { id: 'desc' },
+    orderBy: [
+      {orderNumber: 'asc'},
+      {id: 'asc'},
+    ],
     select: {
       id: true,
       name: true,
