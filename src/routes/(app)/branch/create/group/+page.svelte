@@ -2,14 +2,15 @@
 	import Alert from "$components/ui/alert.svelte";
 	import Block from "$components/ui/block.svelte";
 	import Button from "$components/ui/button.svelte";
-	import CitySelect from "$components/ui/city-select.svelte";
 	import ColorSelect from "$components/ui/color-select.svelte";
+	import InputNumber from "$components/ui/input-number.svelte";
 	import Input from "$components/ui/input.svelte";
 	import Textarea from "$components/ui/textarea.svelte";
 
   let { form } = $props()
 
   let name = $state(form?.data.name || '')
+  let orderNumber = $state(99)
   let color = $state(form?.data.color || '')
   let description = $state(form?.data.description || '')
 </script>
@@ -19,6 +20,9 @@
     <ul>
       <li data-label="分组名称">
         <Input bind:value={name} name="name" maxlength={30} placeholder="分组名称 30个字以内"/>
+      </li>
+      <li data-label="分组排序">
+        <InputNumber bind:value={orderNumber} name="orderNumber" min={1} max={200} placeholder="序号越小越靠前"/>
       </li>
       <li data-label="分组颜色">
         <ColorSelect bind:value={color} name="color" placeholder="请选择"/>
