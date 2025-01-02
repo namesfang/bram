@@ -15,7 +15,7 @@
     onchange,
   }: ui.SwitchProps = $props()
 
-  let checked = $state(false)
+  let checked = $state(value === customValues[0])
 
   const toggle = ()=> {
     checked = !checked
@@ -30,12 +30,8 @@
   {style}
   style:--background-color={`var(--${color}-color)`}
   class:round={round}
-  class:active={value === customValues[0]}
-  class:tiny={size === 'tiny'}
-  class:small={size === 'small'}
-  class:medium={size === 'medium'}
-  class:large={size === 'large'}
-  class="ui-switch {customClass}">
+  class:active={checked}
+  class="ui-switch {size} {customClass}">
   <span class="slide">
     <input type="checkbox" bind:checked={checked} {value} {name}/>
     {#if checked}
