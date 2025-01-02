@@ -80,7 +80,7 @@ export default class Session {
   constructor(cookies: Cookies, options: Options) {
     this.cookie = cookies
     // 
-    const { savePath, sessionName = 'sessionid', cookieOptions = { path: '/' } } = options
+    const { savePath, sessionName = 'sessionid', cookieOptions = { path: '/', secure: false } } = options
     
     // 保存路径是否存在
     try {
