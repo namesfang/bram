@@ -1,10 +1,9 @@
 <script lang="ts">
-	import Button from '$components/ui/button.svelte';
-	import { getMessageContext } from '$components/ui/message.js';
-	import Select from '$components/ui/select.svelte';
 	import Switch from '$components/ui/switch.svelte';
-	import { Fetch } from '$lib/fetch.js';
-	import { onMount } from 'svelte';
+	import Select from '$components/ui/select.svelte';
+	import Button from '$components/ui/button.svelte';
+	import { getMessageContext } from '$components/ui/message';
+	import { Fetch } from '$lib/fetch';
 
   const messager = getMessageContext()
 
@@ -16,8 +15,8 @@
 
   let { data } = $props()
 
-  let collapsePublished = $state<0 | 1>(0)
-  let createPosition = $state(1)
+  let collapsePublished = $state<0 | 1>(data.user.configuration.branch.collapsePublished)
+  let createPosition = $state(data.user.configuration.branch.createPosition)
 
   const modify = async (name: string, value: number)=> {
     const f = new Fetch()
@@ -26,13 +25,6 @@
       messager.alert(message)
     }
   }
-
-  onMount(()=> {
-    collapsePublished = data.user.configuration.branch.collapsePublished
-    createPosition = data.user.configuration.branch.createPosition
-
-    console.log(data.user.configuration.branch)
-  })
 </script>
 
 <div class="wrapper">
@@ -53,12 +45,12 @@
   <ul>
     <li>
       <span>已发版分支自动折叠</span>
-      <Switch customValues={[1, 0]} onchange={(value)=> modify('collapsePublished', value as number)} size="large" bind:value={collapsePublished}/>
+      <Switch bind:value={collapsePublished} customValues={[1, 0]} onchange={(value)=> modify('collapsePublished', value as number)} size="large"/>
     </li>
     <li>
       <span>新增分支按钮显示位置</span>
       <div class="select">
-        <Select onchange={(value)=> modify('createPosition', value as number)} bind:value={createPosition} {options} />
+        <Select bind:value={createPosition} {options} onchange={(value)=> modify('createPosition', value as number)} />
       </div>
     </li>
   </ul>
