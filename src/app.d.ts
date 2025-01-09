@@ -3,7 +3,7 @@ import type Session from "$lib/server/session"
 declare global {
 
 	// 登录者信息
-	type User = {
+	interface User {
 		id: number
 		name: string
 		nick: string
@@ -25,7 +25,7 @@ declare global {
 	}
 
 	// 配置项
-	type Configuration = {
+	interface Configuration {
 		siteName: string
 		siteICPString: string
 		securityLoginEnabled: string
@@ -33,12 +33,12 @@ declare global {
 	}
 
 	// 字典
-	type DictOption = {
+	interface DictOption {
     value: string
     label: string
   }
 	// 字典
-	type DictMap = {
+	interface DictMap {
 		[name: string]: {
 			[value: string]: string | DictOption[]
 			children: DictOption[]
@@ -46,7 +46,7 @@ declare global {
 	}
 
 	// 主导航
-	type Nav = {
+	interface Nav {
     label: string,
     icon: IconName,
     href: string,
@@ -54,13 +54,6 @@ declare global {
     target?: '_blank'
   }
 
-	// namespace globalThis {
-	// 	interface Window {
-	// 		BMAP_PROTOCOL: string;
-	// 		BMapGL_loadScriptTime: number;
-	// 	}
-	// }
-	
 	namespace App {
 
 		// interface Error {}

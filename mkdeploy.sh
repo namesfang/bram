@@ -11,17 +11,22 @@ if [ ! -d "$deploydir" ]; then
 fi
 
 # 删除临时目录
-# rm -rf $deploydir
+if [ "$1" = "clear" ]; then
+  rm -r $deploydir
+fi
 
-cp -r "$dir/deploy" "$deploydir"
+rm -rf "$deploydir/deploy"
+cp -rf "$dir/deploy" "$deploydir"
 
 # 拷贝资源
 if [ -d "$dir/build" ]; then
-  cp -r "$dir/build" "$deploydir/build"
+  rm -rf "$deploydir/build"
+  cp -rf "$dir/build" "$deploydir/build"
 fi
 
 # 拷贝ORM
-cp -r "$dir/prisma" "$deploydir/prisma"
+rm -rf "$deploydir/prisma"
+cp -rf "$dir/prisma" "$deploydir/prisma"
 # 清理数据库文件
 rm -rf $deploydir/prisma/*.db
 
@@ -29,10 +34,10 @@ rm -rf $deploydir/prisma/*.db
 for name in package.json package-lock.json pm2.config.cjs .npmrc .env-example; do
   source="$dir/$name"
   if [ -f "$source" ]; then
-    cp "$source" "$deploydir/$name"
+    cp -rf "$source" "$deploydir/$name"
   fi
 done
 
-echo "Success."
+echo "Done."
 
 
