@@ -95,7 +95,7 @@ const makeChartData = async (userId: number)=> {
   const labels: string[] = []
   const created: number[] = [0]
   const published: number[] = []
-  for(let i=1; i<end; i++) {
+  for(let i=1; i<=end; i++) {
     const d = i.toString().padStart(2, '0')
     labels.push(d)
     created.push(createdMap.get(d) || 0)
