@@ -27,6 +27,7 @@
 						beginAtZero: true,
 						offset: true,
 						ticks: {
+							stepSize: 1,
 							padding: 10,
 						},
 						grid: {
