@@ -50,16 +50,14 @@ pick_dist_directory() {
 
 # 切换分支
 switch_dist_branch() {
+  local flag=0
   # 执行打包命令校验
   if [[ "demo" != "$branch_name" && "main" != "$branch_name" ]]; then
     return 1
   fi
 
-  cd "$dist_dirname"
-
-  local flag=0
-
   # 校验<dist>目录是否存在版本控制
+  cd "$dist_dirname"
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     # 切换分支
     if git show-ref --verify --quiet "refs/heads/$branch_name"; then
@@ -72,6 +70,13 @@ switch_dist_branch() {
       fi
     fi
   fi
+
+  # 推送标签
+  if [ "" == "$flag" ]; then
+    git tag -a $tag_name -m "Release $tag_name"
+    git push origin $tag_name
+  fi
+  
   cd "$work_dirname"
   return $flag
 }
@@ -154,10 +159,6 @@ start() {
     return
   fi
 
-  # 推送标签
-  git tag -a $tag_name -m "Release $tag_name"
-  git push origin $tag_name
-
   # 执行打包命令
   npm run build:${branch_name}
 
@@ -174,7 +175,7 @@ start() {
   git add .
   git commit -am "Release $tag_name"
   git push origin "$branch_name"
+  cd "$work_dirname"
 }
 
 start "$1"
-
