@@ -61,20 +61,20 @@ switch_dist_branch() {
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     # 切换分支
     if git show-ref --verify --quiet "refs/heads/$branch_name"; then
-      if [ ! $(git switch "$branch_name") ] > /dev/null 2>&1; then
-        flag=2
-      fi
+      git switch "$branch_name" > /dev/null 2>&1
     else
-      if [ ! $(git switch -c "$branch_name") ] > /dev/null 2>&1; then
-        flag=2
-      fi
+      git switch -c "$branch_name" > /dev/null 2>&1
     fi
   fi
 
-  # 推送标签
-  if [ "0" == "$flag" ]; then
-    git tag -a $tag_name -m "Release $tag_name"
-    git push origin $tag_name
+  local name=$(git branch --show-current)
+
+  if [ "$branch_name" != "$name" ]; then
+    flag=2
+    # else
+    # 推送标签
+    # git tag -a $tag_name -m "Release $tag_name" > /dev/null 2>&1
+    # git push origin $tag_name -f > /dev/null 2>&1
   fi
   
   cd "$work_dirname"
