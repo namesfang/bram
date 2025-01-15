@@ -153,6 +153,11 @@ start() {
     return
   fi
 
+  # 推送标签
+  local tag_name=$(date +"v%Y%m%d_%H%M")
+  git tag -a $tag_name -m "Release $tag_name"
+  git push origin $tag_name
+
   # 执行打包命令
   npm run build:${branch_name}
 
@@ -165,7 +170,10 @@ start() {
     ls -al "$dist_dirname"
   fi
   # 推到远程
-  cd "$dist_dirname" && git push origin "$branch_name"
+  cd "$dist_dirname"
+  git add .
+  git commit -am "Release $tag_name"
+  git push origin "$branch_name"
 }
 
 start "$1"
