@@ -12,6 +12,8 @@ echo -e "\e[0m\c"
 # 当前工作目录
 work_dirname=$(pwd)
 
+# 标签名称
+tag_name=$(date +"v%Y%m%d_%H%M")
 # 分支名称
 branch_name=$(git branch --show-current)
 
@@ -55,24 +57,23 @@ switch_dist_branch() {
 
   cd "$dist_dirname"
 
+  local flag=0
+
   # 校验<dist>目录是否存在版本控制
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     # 切换分支
-    if ! git show-ref --verify --quiet "refs/heads/$branch_name"; then
-      if [ git switch -c "$branch_name" ] > /dev/null 2>&1; then
-        cd "$work_dirname"
-        return 2
+    if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+      if [ ! $(git switch "$branch_name") ] > /dev/null 2>&1; then
+        flag=2
       fi
     else
-      if [ git switch "$branch_name" ] > /dev/null 2>&1; then
-        cd "$work_dirname"
-        return 2
+      if [ ! $(git switch -c "$branch_name") ] > /dev/null 2>&1; then
+        flag=2
       fi
     fi
-    echo "Switched to branch '${branch_name}'."
-    # 回到工作目录
-    cd "$work_dirname"
   fi
+  cd "$work_dirname"
+  return $flag
 }
 
 # 拷贝build目录
@@ -154,7 +155,6 @@ start() {
   fi
 
   # 推送标签
-  local tag_name=$(date +"v%Y%m%d_%H%M")
   git tag -a $tag_name -m "Release $tag_name"
   git push origin $tag_name
 
