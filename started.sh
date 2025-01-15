@@ -72,7 +72,7 @@ switch_dist_branch() {
   fi
 
   # 推送标签
-  if [ "" == "$flag" ]; then
+  if [ "0" == "$flag" ]; then
     git tag -a $tag_name -m "Release $tag_name"
     git push origin $tag_name
   fi
