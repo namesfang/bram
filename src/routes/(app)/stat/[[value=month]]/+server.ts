@@ -31,7 +31,7 @@ const makeChartData = async (userId: number, startTime: string, endTime: string)
     }
   })
 
-  const end = dayjs().endOf('month').date()
+  const end = dayjs(endTime).date()
 
   const labels: string[] = []
   const created: number[] = [0]
