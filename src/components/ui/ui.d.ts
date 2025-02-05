@@ -142,8 +142,8 @@ declare global {
     }
   
     interface SelectOption {
-      // label: string
-      // value: string | number
+      label: string
+      value: string | number
       [key: string]: string | number | unknown
     }
     
@@ -154,8 +154,8 @@ declare global {
       style?: string
       fieldNames?: FieldNames
       placeholder?: string
-      options: Option[]
-      onchange?: (value: string | number | unknown, option: Option) => void | Promise<void>
+      options: SelectOption[]
+      onchange?: (value: string | number | unknown, option: SelectOption) => void | Promise<void>
     }
 
     interface TabProps {
