@@ -11,7 +11,7 @@
 		"build:demo": "PUBLIC_BUILD_MODE='demo' vite build",
 		"deploy": "npx prisma migrate deploy && npx prisma db pull && npx prisma db seed && npx prisma generate --sql",
 		"started": "./started.sh",
-		"pm2:start": "pm2 start ./ecosystem.config.cjs",
+		"pm2:start": "pm2 start ./pm2.config.cjs",
 		"pm2:stop": "pm2 stop bram",
 		"pm2:reload": "pm2 reload bram",
 		"preview": "vite preview",
