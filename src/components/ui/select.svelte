@@ -13,7 +13,7 @@
   }: ui.SelectProps = $props()
 
   let visible = $state(false)
-  let current = $state<ui.SelectOption>({})
+  let current = $state<ui.SelectOption>({} as ui.SelectOption)
 
   const toggle = ()=> {
     visible = !visible
@@ -28,7 +28,7 @@
 
   $effect(()=> {
     if ('' !== value || typeof value !== 'undefined') {
-      current = options.find(option=> option[fieldNames.value] === value) || {}
+      current = options.find(option=> option[fieldNames.value] === value) || {} as ui.SelectOption
     }
   })
 </script>
@@ -92,6 +92,7 @@
         border-radius: 5px;
         box-sizing: border-box;
         outline: 0;
+        cursor: pointer;
         border: 2px solid var(--ui-select-secondary-50);
         &:hover {
           border-color: var(--ui-select-secondary-100);
