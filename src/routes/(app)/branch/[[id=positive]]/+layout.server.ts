@@ -20,7 +20,7 @@ const fetchTiles = async(userId: number, keyword: string)=> {
     where,
     orderBy: [
       {orderNumber: 'asc'},
-      {id: 'asc'},
+      {id: 'desc'},
     ],
     select: {
       id: true,
