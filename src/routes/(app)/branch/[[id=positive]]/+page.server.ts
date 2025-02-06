@@ -38,7 +38,7 @@ const fetchBranchs = async(userId: number, tileId: string, keyword: string)=> {
     where,
     orderBy: [
       {orderNumber: 'asc'},
-      {id: 'asc'},
+      {id: 'desc'},
     ],
   })
 
