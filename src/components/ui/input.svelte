@@ -29,6 +29,7 @@
 
   input {
     flex: 1;
+    width: 100%;
     font-size: 14px;
     color: var(--ui-input-secondary);
     border-radius: var(--border-radius);
