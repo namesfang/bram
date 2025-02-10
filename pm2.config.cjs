@@ -6,7 +6,7 @@ module.exports = {
       instances: "max",
       script: "./build/index.js",
       env: {
-        PORT: 6040
+        PORT: 3000
       }
     },
   ],
